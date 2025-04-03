@@ -1,0 +1,34 @@
+name: Ejecutar Script Python y guardar CSV
+
+on:
+  workflow_dispatch:  # Permite iniciar el workflow manualmente
+
+jobs:
+  run-python-script:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout del repositorio
+      uses: actions/checkout@v3
+
+    - name: Configurar Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.12
+
+    - name: Ejecutar el script
+      run: |
+        python script.py
+
+    - name: Configurar Git
+      run: |
+        git config --global user.email "100408805@alumnos.uc3m.es"
+        git config --global user.name "kokesh22"
+
+    - name: Commit y push del CSV generado
+      run: |
+        git add sample_data.csv
+        git commit -m "Agregar archivo CSV generado"
+        git push
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
